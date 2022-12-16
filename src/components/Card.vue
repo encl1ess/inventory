@@ -3,7 +3,7 @@
         <slot name="card__header"></slot>
         <img class="card__img" src="@/assets/aside-image.png">
         <div class="card__body">
-            <h4 class="card__title text"></h4>
+            <h4 class="card__title text title"></h4>
             <p class="card__text text"></p>
             <p class="card__text text"></p>
             <p class="card__text text"></p>
@@ -19,9 +19,6 @@
 <script>
 export default {
     name: 'card',
-    props: {
-    },
-
 }
 </script>
 
@@ -33,9 +30,14 @@ export default {
     width: 100%;
     margin: 0.6rem 0;
 }
+.title {
+    height: 26px;
+    border-radius: 8px;
+}
 
 .card {
     width: 100%;
+    min-width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,8 +59,6 @@ export default {
 
     &__title {
         max-width: 190px;
-        height: 26px;
-        border-radius: 8px;
     }
 
     &__footer {
