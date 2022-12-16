@@ -1,6 +1,5 @@
 <template>
     <section class="card">
-        <slot name="card__header"></slot>
         <img class="card__img" src="@/assets/aside-image.png">
         <div class="card__body">
             <h4 class="card__title text title"></h4>
@@ -86,6 +85,7 @@ export default {
     }
 
     &__body {
+        overflow-y: auto;
         width: 80%;
         min-width: max-content;
         // height: max-content;

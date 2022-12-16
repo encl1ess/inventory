@@ -19,7 +19,8 @@ export const itemsStore = {
             cellId: 5,
             color: 'purple'
         },
-    ]
+    ],
+    currentItem: {}
   }),
   getters: {
     getItem: (state) => (cell) =>{

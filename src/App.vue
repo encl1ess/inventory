@@ -6,6 +6,7 @@
       </aside>
       <div class="inventory">
         <grid />
+        <modal-card :show="true"/>
       </div>
 
     </div>
@@ -17,17 +18,20 @@
 </template>
 
 <script>
-import Card from './components/Card.vue';
-import Grid from './components/Grid.vue';
+import Card from '@/components/Card.vue';
+import Grid from '@/components/Grid.vue';
+import ModalCard from '@/components/ModalCard.vue';
 export default {
   components: {
     Card,
-    Grid
+    Grid,
+    ModalCard
   }
 }
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -39,7 +43,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background: #262626;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,5 +84,6 @@ aside {
   height: 100%;
   max-width: 525px;
   overflow: hidden;
+  position: relative;
 }
 </style>

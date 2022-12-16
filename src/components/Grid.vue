@@ -1,10 +1,7 @@
 <template>
     <div class="grid">
-        <div v-for="index in 25" :key="index" class="grid__cell" 
-        @drop="onDrop($event, index-1)" 
-        @dragover.prevent
-        @dragenter.prevent
-        @click="showModal">
+        <div v-for="index in 25" :key="index" class="grid__cell" @drop="onDrop($event, index - 1)" @dragover.prevent
+            @dragenter.prevent @click="showModal">
             <item draggable="true" v-if="getItem(index - 1)" :item="getItem(index - 1)"
                 @dragstart="startDrag($event, getItem(index - 1))" />
         </div>
@@ -14,10 +11,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import Item from './Item.vue';
+
 export default {
     name: 'grid',
     components: {
-        Item
+        Item,
     },
     data() {
         return {
@@ -39,7 +37,7 @@ export default {
         },
         showModal(event) {
             this.currentCell = event.target.key;
-            
+
         }
 
     },
