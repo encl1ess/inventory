@@ -1,8 +1,8 @@
 <template>
     <section class="modal card" v-if="show">
         <header class="card__header">
-            <img class="cross-icon" src="@/assets/icons/cross.svg" />
-            <div class="wrapper green">
+            <img class="cross-icon" src="@/assets/icons/cross.svg" @click="closeModal" />
+            <div class="wrapper" :class="item.color">
                 <div class="modal__square modal__square-back"></div>
                 <div class="modal__square modal__square-front"></div>
             </div>
@@ -19,20 +19,23 @@
         </div>
         <hr />
         <footer class="modal__footer">
-            <custom-button v-if="delete" class="red large">Удалить предмет</custom-button>
-            <div v-else class="input-wrapper">
-                <input class="quantity-input" type="number" placeholder="Введите количество" />
+            <custom-button class="red large" @click="() => removeItem(this.item)">Удалить
+                предмет</custom-button>
+            <div v-if="add" class="input-wrapper">
+                <input class="quantity-input" type="number" @input="quantity = +$event.target.value"
+                    placeholder="Введите количество" />
                 <div class="button-wrapper">
                     <custom-button class="white">Отмена</custom-button>
-                    <custom-button class="red">Подтвердить</custom-button>
+                    <custom-button class="red" @click="addItem">Подтвердить</custom-button>
                 </div>
             </div>
         </footer>
-
     </section>
 </template>
 
 <script>
+import store from '@/store';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import CustomButton from './ui/CustomButton.vue';
 export default {
     name: 'modal-card',
@@ -40,17 +43,48 @@ export default {
         CustomButton
     },
     props: {
+        item: {
+            type: Object
+        },
         show: {
             type: Boolean,
             default: false
         },
-        delete: {
+        add: {
             type: Boolean,
-            default: false
+            default: true
+        },
+    },
+    data() {
+        return {
+            quantity: 1,
         }
     },
     methods: {
+        closeModal() {
+            this.$emit('update:show', false)
+        },
+        addItem() {
+            this.item.quantity = this.quantity;
+            // this.items.push(this.item);
+            this.setItems([...this.items, this.item])
+            this.$emit('update:show', false);
+        },
+        removeItem(item) {
+            this.setItems( this.items.filter(i => i.id !== item.id))
+        },
+   
+        ...mapMutations({
+            setItems: 'items/setItems',
+            remove: 'items/removeItem'
+        }),
 
+
+    },
+    computed: {
+        ...mapState({
+            items: state => state.items.items
+        })
     }
 
 }
@@ -93,9 +127,11 @@ export default {
         justify-content: start;
         width: 100%;
         height: 215px;
+
         .cross-icon {
             align-self: flex-end;
             margin: 1em;
+            cursor: pointer;
         }
 
         .wrapper {
@@ -129,6 +165,7 @@ export default {
     .modal__footer {
         width: 85%;
     }
+
     .input-wrapper {
         display: flex;
         flex-direction: column;
@@ -144,21 +181,28 @@ export default {
         backdrop-filter: blur(8px);
 
         .quantity-input {
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+                /* <-- Apparently some margin are still there even though it's hidden */
+            }
+
+            -webkit-appearance: none;
+            appearance: none;
             border-radius: 4px;
             margin: 0.5rem 0;
             height: 40px;
-            width: 85%;
+            width: 78%;
             background: transparent;
             font-family: 'Inter';
+            color: #FFFFFF;
             font-weight: 500;
             font-size: 14px;
-            opacity: 0.4;
             line-height: 17px;
             border: 1px solid #4D4D4D;
-
-            &::placeholder {
-                padding-left: 1em;
-            }
+            padding-left: 1em;
         }
 
         .button-wrapper {
@@ -166,7 +210,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1em;
+            margin-bottom: 1.3em;
         }
     }
 

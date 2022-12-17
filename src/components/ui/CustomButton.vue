@@ -14,6 +14,9 @@ export default {
 .red {
     color: white;
     background: #FA7272;
+    &:hover {
+        background: #FF8888;
+    }
 }
 
 .white {
@@ -28,11 +31,15 @@ export default {
 
 .custom-button {
     min-width: fit-content;
-    padding: 0.5em 1rem;
+    padding: 0.5em 1.1rem;
     height: 33px;
     font-family: 'SF Pro Display';
     font-size: 14px;
     line-height: 17px;
+    border: none;
     border-radius: 8px;
+    &:hover {
+        cursor: url('@/assets/icons/arrow-cursor.svg'), auto;
+    }
 }
 </style>
