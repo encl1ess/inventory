@@ -1,25 +1,6 @@
 export const itemsStore = {
   state: () => ({
-    items: [
-    //   {
-    //     id: 0,
-    //     quantity: 4,
-    //     cellId: 0,
-    //     color: 'green'
-    // },
-    // {
-    //     id: 1,
-    //     quantity: 2,
-    //     cellId: 1,
-    //     color: 'yellow'
-    // },
-    // {
-    //     id: 2,
-    //     quantity: 5,
-    //     cellId: 5,
-    //     color: 'purple'
-    // },
-    ],
+    items: [],
   }),
   getters: {
     getItem: (state) => (cell) => {

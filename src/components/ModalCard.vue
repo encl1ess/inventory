@@ -1,40 +1,44 @@
 <template>
-    <section class="modal card" v-if="show">
-        <header class="card__header">
-            <img class="cross-icon" src="@/assets/icons/cross.svg" @click="closeModal" />
-            <div class="wrapper" :class="item.color">
-                <div class="modal__square modal__square-back"></div>
-                <div class="modal__square modal__square-front"></div>
-            </div>
-        </header>
-        <hr />
-        <div class="card__body">
-            <h4 class="card__title  text title"></h4>
-            <p class="card__text text"></p>
-            <p class="card__text text"></p>
-            <p class="card__text text"></p>
-            <p class="card__text text"></p>
-            <p class="card__text text"></p>
-
-        </div>
-        <hr />
-        <footer class="modal__footer">
-            <custom-button class="red large" @click="() => removeItem(this.item)">Удалить
-                предмет</custom-button>
-            <div v-if="add" class="input-wrapper">
-                <input class="quantity-input" type="number" @input="quantity = +$event.target.value"
-                    placeholder="Введите количество" />
-                <div class="button-wrapper">
-                    <custom-button class="white">Отмена</custom-button>
-                    <custom-button class="red" @click="addItem">Подтвердить</custom-button>
+    <transition name="show">
+        <section class="modal card" v-if="show">
+            <header class="card__header">
+                <div class="cross-icon" @click.stop="closeModal">
+                    <img  src="@/assets/icons/cross.svg" />
                 </div>
+                <div class="wrapper" :class="item.color">
+                    <div class="modal__square modal__square-back"></div>
+                    <div class="modal__square modal__square-front"></div>
+                </div>
+            </header>
+            <hr />
+            <div class="card__body">
+                <h4 class="card__title  text title"></h4>
+                <p class="card__text text"></p>
+                <p class="card__text text"></p>
+                <p class="card__text text"></p>
+                <p class="card__text text"></p>
+                <p class="card__text text"></p>
+
             </div>
-        </footer>
-    </section>
+            <hr />
+            <footer class="modal__footer">
+                <custom-button class="red large" @click="() => removeItem(this.item)">Удалить
+                    предмет</custom-button>
+                <div v-if="add" class="input-wrapper">
+                    <input class="quantity-input" :style="error ? { border: '1px solid red' } : { border: '1px solid #4D4D4D' }"
+                        type="number" @input="quantity = +$event.target.value; error = false;"
+                        placeholder="Введите количество" />
+                    <div class="button-wrapper">
+                        <custom-button class="white" @click="show = false">Отмена</custom-button>
+                        <custom-button class="red" @click="addItem">Подтвердить</custom-button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </transition>
 </template>
 
 <script>
-import store from '@/store';
 import { mapState, mapMutations, mapActions } from 'vuex';
 import CustomButton from './ui/CustomButton.vue';
 export default {
@@ -57,7 +61,8 @@ export default {
     },
     data() {
         return {
-            quantity: 1,
+            quantity: 0,
+            error: false
         }
     },
     methods: {
@@ -65,15 +70,24 @@ export default {
             this.$emit('update:show', false)
         },
         addItem() {
-            this.item.quantity = this.quantity;
-            // this.items.push(this.item);
-            this.setItems([...this.items, this.item])
-            this.$emit('update:show', false);
+            if (this.quantity) {
+                this.error = false;
+                this.item.quantity = this.quantity;
+                this.quantity = 0;
+                // this.items.push(this.item);
+                this.setItems([...this.items, this.item])
+                this.$emit('update:show', false);
+
+            } else {
+                this.error = true;
+            }
+
         },
         removeItem(item) {
-            this.setItems( this.items.filter(i => i.id !== item.id))
+            this.setItems(this.items.filter(i => i.id !== item.id))
+            this.$emit('update:show', false);
         },
-   
+
         ...mapMutations({
             setItems: 'items/setItems',
             remove: 'items/removeItem'
@@ -91,14 +105,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.show-enter-active,
+.show-leave-active {
+    transition: right 0.4s ease-in-out;
+}
+
+.show-enter-from,
+.show-leave-to {
+    right: -250px !important;
+}
+
 .modal {
     position: absolute;
+
     top: 0;
     right: 0;
     width: 250px;
     height: inherit;
     background: rgba(38, 38, 38, 0.5);
     backdrop-filter: blur(8px);
+    border: none;
     border-left: 1px solid #4D4D4D;
     border-radius: 0;
 
@@ -130,9 +156,10 @@ export default {
 
         .cross-icon {
             align-self: flex-end;
-            margin: 1em;
+            padding: 1em;
             cursor: pointer;
         }
+
 
         .wrapper {
             margin-top: 0.7em;
@@ -201,7 +228,6 @@ export default {
             font-weight: 500;
             font-size: 14px;
             line-height: 17px;
-            border: 1px solid #4D4D4D;
             padding-left: 1em;
         }
 

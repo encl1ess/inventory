@@ -7,9 +7,8 @@
       <div class="inventory">
         <grid />
       </div>
-
     </div>
-
+    <search/>
   </div>
 
 
@@ -19,12 +18,13 @@
 <script>
 import Card from '@/components/Card.vue';
 import Grid from '@/components/Grid.vue';
+import Search from '@/components/Search.vue';
 import store from './store';
-// import ModalCard from '@/components/ModalCard.vue';
 export default {
   components: {
     Card,
-    Grid
+    Grid,
+    Search
   },
   beforeMount() {
 		store.commit('items/initialiseStore');
@@ -53,11 +53,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: url('@/assets/icons/arrow-cursor.svg'), auto;
 
 }
 
 .content-wrapper {
   display: flex;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
@@ -65,7 +67,6 @@ aside {
   width: 30%;
   max-width: 236px;
   height: inherit;
-  margin-right: 1.5rem;
 }
 
 .flex-container {
@@ -88,6 +89,7 @@ aside {
   width: 67%;
   height: 100%;
   max-width: 525px;
+  min-width: 300px;
   overflow: hidden;
   position: relative;
 }

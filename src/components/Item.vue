@@ -22,6 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .green {
     div:first-child {
         background: #7FAA65;
@@ -52,6 +53,15 @@ export default {
     }
 }
 
+.red {
+    div:first-child {
+        background: indianred;
+    }
+
+    div:last-child {
+        background: rgba(237, 116, 116, 0.35);
+    }
+}
 .item {
     width: 100%;
     height: 100px;
@@ -60,7 +70,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: end;
-
+    cursor: url('@/assets/icons/cross.svg');
     &__icon {
         .wrapper {
             width: 54px;
