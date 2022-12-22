@@ -70,7 +70,7 @@ export default {
             this.$emit('update:show', false)
         },
         addItem() {
-            if (this.quantity) {
+            if (this.quantity > 0) {
                 this.error = false;
                 this.item.quantity = this.quantity;
                 this.quantity = 0;
